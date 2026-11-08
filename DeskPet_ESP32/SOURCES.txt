@@ -1,0 +1,28 @@
+RobotEye engine: https://github.com/fonzu/RobotEye
+  robot_eye.cpp / robot_eye.hpp / RobotEye.h: original MIT license in LICENSE-RobotEye-MIT.txt.
+
+LunarData.h: month-boundary table generated from the numerical YEAR_INFOS data at
+https://github.com/lidaobing/python-lunardate/blob/master/lunardate.py
+  Original lunar project: Fung F. Lee and Ricky Yeung, 1988/1989/1991/1992/2001.
+  python-lunardate: LI Daobing, 2008; GPL v2.
+  GPL v2 text is included in COPYING-GPL-2.0.txt.
+  No python-lunardate executable conversion code is included. The conversion
+  and month-table lookup code in this project was written for this sketch.
+  The added sketch code is supplied under GPL v2 for compatibility with that data.
+  Original MIT RobotEye files retain their license.
+  Date checks include HKO calendar conversion tables:
+  https://www.hko.gov.hk/en/gts/time/conversion.htm
+  https://www.hko.gov.hk/en/gts/time/calendar/pdf/files/2027e.pdf
+
+Weather provider: Open-Meteo (CC BY 4.0 weather data).
+  https://open-meteo.com/   https://open-meteo.com/en/docs
+  Icons are drawn locally using U8g2 primitives. No remote icon downloads.
+
+Ocean.h / Ocean.cpp: written for this sketch (GPL v2 like the other added sketch code).
+  Moon phase uses the mean synodic month from the 2000-01-06 18:14 UTC new moon.
+Space.h / Space.cpp / SpaceData.h: written for this sketch.
+  MOON_TEX is a 48x48 downsample of the full-moon photo supplied by the user.
+  EARTH_LAND is a coarse hand-made land mask (latitude bands), not taken from a map dataset.
+
+DIN digit bitmaps: DIN Alternate Bold, one-bit 24px raster preview.
+Chinese bitmaps: small STHeiti raster glyph subset for lunar month/day labels.
