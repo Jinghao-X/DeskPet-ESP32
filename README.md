@@ -1,53 +1,50 @@
-# DeskPet ESP32 · 把一片海和整个宇宙装进 1.3 寸屏幕
+# DeskPet ESP32 · An Ocean and a Universe on a 1.3" Screen
 
-**一块 ESP32、一块 128×64 的小 OLED、一个按钮。** 按一下，海上掀起巨浪，鲸鱼跃出水面；再按两下，镜头掠过月球、地球、土星，一路飞进黑洞。
+**One ESP32, one tiny 128×64 OLED, one button.** Tap it and a storm rolls across a 3D night sea while a whale breaches under a moon that matches tonight's real sky. Double-tap and the camera sweeps past the Moon, Earth and Saturn, all the way into a black hole.
 
-- 🌊 **可以造浪的 3D 夜海**：真正的透视海面在翻涌，单击就从随机方向卷起一道大浪，浪尖碎成白沫和浪花。
-- 🐋 **会出现的鲸鱼**：喷水、翘尾，或者整条跃出海面，砸回水里时整块屏幕都在震。
-- 🌕 **跟着现实走的月亮**：月相按真实日期计算，窗外是什么月亮，屏幕里就是什么月亮；月光在海面上碎成一片波光。
-- 🕳️ **一个有黑洞的宇宙**：3D 运镜巡游月球 → 地球 → 火星 → 土星 → 太阳系 → 银河系 → 黑洞。引力透镜扭曲星光，吸积盘向内旋转；偶尔飞过的 UFO，路过黑洞会被吸进去。
-- 🎨 **黑白屏上的灰度**：单色 OLED 靠高速切换子帧做出灰阶，两个 CPU 核心一个渲染、一个推屏。
-- 👀 **还有日常的一面**：会眨眼换表情的机器人眼睛，以及时钟、天气、中文农历的信息总览。
+- 🌊 **An ocean you can stir up**: a real perspective sea that keeps churning. Tap to throw a huge wave from a random direction, with crests breaking into foam and spray.
+- 🐋 **Whales**: they spout, raise their flukes, or launch their whole body out of the water. When they crash back down, the entire screen shakes.
+- 🌕 **A moon that follows reality**: the phase is computed from the real date, so whatever moon is outside your window is the moon on the screen, with moonlight glittering across the waves.
+- 🕳️ **A universe with a black hole**: a 3D camera tour from the Moon → Earth → Mars → Saturn → the Solar System → the Milky Way → a black hole. Gravitational lensing bends the starlight and the accretion disk spirals inward. A passing UFO gets pulled in if it flies too close.
+- 🎨 **Grayscale on a black-and-white screen**: the monochrome OLED shows gray levels by flipping sub-frames fast. One CPU core renders, the other keeps the screen fed.
+- 👀 **And an everyday side**: blinking robot eyes with expressions, plus an info screen with the clock, weather and the Chinese lunar calendar.
 
-**A pocket ocean and universe on a 1.3" OLED.** Tap to whip up waves and watch whales breach under a moon that follows the real lunar phase, then fly a 3D camera past the Moon, Earth and Saturn into a lensing black hole — all on an ESP32 with one button.
-
-| 3D 夜海 Night ocean | 太空巡游 Space tour |
+| Night ocean | Space tour |
 |---|---|
 | ![ocean](docs/ocean.gif) | ![space](docs/space.gif) |
 
-> GIF 由同一份 `Ocean.cpp` / `Space.cpp` 在电脑上逐帧渲染得到；太空界面在实物屏上是用快速切换子帧做出的假灰度，GIF 里直接画成灰色。
-> The GIFs are rendered on a PC from the same source files. On the real OLED the space screen's gray levels come from rapidly alternating sub-frames.
+> The GIFs are rendered frame by frame on a PC from the same `Ocean.cpp` / `Space.cpp` that run on the board. On the real OLED, the space screen's gray levels come from rapidly alternating sub-frames; in the GIF they are drawn as gray.
 
-## 四个界面 Screens
+## Screens
 
-1. **信息总览 Overview**：太平洋时间（PST/PDT 自动切换）大号 DIN 时钟、北京时间、星期和日期、实时天气（Open-Meteo，本地绘制天气图标）、公历和中文农历（含闰月，2000–2099）。
-2. **机器人眼睛 Robot eyes**：会眨眼、看来看去的眼睛，单击换表情（正常、开心、生气、困、惊讶、难过）。眼睛引擎来自 [fonzu/RobotEye](https://github.com/fonzu/RobotEye)（MIT），见下方致谢。
-3. **3D 夜海 Night ocean**：透视高度场光线步进的海面，远处海平线一排排涌浪，浪尖白沫和浪花，星空、流星，月亮按真实日期显示月相并在海面反光。
-   - 单击：从左、右、前、后随机方向掀起一道大浪；造浪后鲸鱼出现概率提高。
-   - 长按：马上叫鲸鱼（鲸跃 → 喷水 → 翘尾）；鲸鱼也会每 1–3 分钟随机出现，鲸跃落水时屏幕震动。
-4. **太空巡游 Space tour**（假灰度）：月球 → 地球 → 火星 → 土星 → 太阳系 → 银河系 → 黑洞 → 月球，镜头沿 3D 弧线飞行。
-   - 单击：飞到下一站。
-   - 长按：切换 3 级灰（默认）/ 4 级灰 / 纯黑白。
-   - 偶尔有 UFO 飞过，在黑洞那一站会被吸进去。
+1. **Overview**: big DIN-style Pacific time clock (PST/PDT switches automatically), Beijing time, weekday and date, live weather from Open-Meteo with locally drawn icons, and the Gregorian plus Chinese lunar date (leap months included, 2000–2099).
+2. **Robot eyes**: eyes that blink and glance around. Tap to change expression: normal, happy, angry, sleepy, surprised, sad. The eye engine is [fonzu/RobotEye](https://github.com/fonzu/RobotEye) (MIT); see Credits.
+3. **Night ocean**: a ray-marched perspective heightfield sea, rolling swells out to the horizon, whitecaps and spray, stars and shooting stars, and a moon showing the real phase reflected on the water.
+   - Tap: a big wave from the left, right, front or back. Each wave raises the chance of a whale.
+   - Long press: summon a whale right away (breach → spout → fluke). Whales also show up on their own every 1–3 minutes.
+4. **Space tour** (fake grayscale): Moon → Earth → Mars → Saturn → Solar System → Milky Way → Black hole → Moon, flown along 3D camera arcs.
+   - Tap: fly to the next stop.
+   - Long press: switch between 3-level gray (default), 4-level gray and pure black and white.
+   - A UFO flies by now and then, and at the black hole it gets sucked in.
 
-## 按钮 Button
+## Button
 
-| 操作 | 作用 |
+| Action | Effect |
 |---|---|
-| 双击（两下间隔 < 350 ms） | 切换界面：总览 → 眼睛 → 海洋 → 太空 → 总览 |
-| 单击 | 当前界面互动（见上） |
-| 长按约 0.8 s | 海洋叫鲸鱼 / 太空切换灰度 |
+| Double-tap (two presses < 350 ms apart) | Next screen: Overview → Eyes → Ocean → Space → Overview |
+| Tap | Interact with the current screen (see above) |
+| Long press (~0.8 s) | Ocean: summon a whale · Space: change gray mode |
 
-串口监视器（115200）里发送 `s` / `d` / `l` 等于单击 / 双击 / 长按，方便调试。
+For testing, send `s` / `d` / `l` in the serial monitor (115200 baud) to simulate a tap, double-tap or long press.
 
-## 硬件 Hardware
+## Hardware
 
-- ESP32 WROOM 开发板（ESP32 Dev Module）
-- 1.3 寸 SH1106 128×64 OLED，7 针 SPI 版（GND VCC CLK MOSI RES DC CS）
-- 一个两脚轻触按钮
-- 面包板和杜邦线
+- ESP32 WROOM dev board (ESP32 Dev Module)
+- 1.3" SH1106 128×64 OLED, 7-pin SPI version (GND VCC CLK MOSI RES DC CS)
+- A two-pin push button
+- Breadboard and jumper wires
 
-## 接线 Wiring
+## Wiring
 
 ![wiring](docs/wiring.png)
 
@@ -61,47 +58,47 @@
 | DC | GPIO27 |
 | CS | GPIO25 |
 
-按钮：一脚接 **GPIO32**，另一脚接 **GND**（程序开启内部上拉，不需要电阻）。
+Button: one leg to **GPIO32**, the other to **GND**. The internal pull-up is enabled, so no resistor is needed.
 
-GPIO 编号是板子丝印上的 IO14、IO13 等，不是数第几个针。屏幕在程序里旋转了 180°，如果你的屏装反了，把 `U8G2_R2` 改成 `U8G2_R0`。
+GPIO numbers are the IO14, IO13, … labels printed on the board, not pin positions. The display is rotated 180° in code. If yours ends up upside down, change `U8G2_R2` to `U8G2_R0`.
 
-## 编译上传 Build
+## Build and Upload
 
-1. 安装 [Arduino IDE](https://www.arduino.cc/en/software)，在开发板管理器安装 **esp32 by Espressif**（已用 3.3.12 测试）。
-2. 库管理器安装 **U8g2**（已用 2.36.19 测试）。网络和 JSON 库随 ESP32 开发板包自带。
-3. 打开 `DeskPet_ESP32/DeskPet_ESP32.ino`。
-4. 把 `Config.example.h` 复制一份改名为 `Config.h`，填入你的 **2.4 GHz** Wi-Fi 名称和密码，以及天气位置的经纬度。`Config.h` 已在 `.gitignore` 里，不会被提交。
-5. 开发板选 **ESP32 Dev Module**，选择串口，上传。程序约占默认分区的 93%，以后加功能可在 工具 → Partition Scheme 选 Huge APP。
-6. 开机显示 SYNCING TIME，联网校时后进入信息总览。
+1. Install the [Arduino IDE](https://www.arduino.cc/en/software), then install **esp32 by Espressif** in the Boards Manager (tested with 3.3.12).
+2. Install **U8g2** in the Library Manager (tested with 2.36.19). The networking and JSON libraries come with the ESP32 core.
+3. Open `DeskPet_ESP32/DeskPet_ESP32.ino`.
+4. Copy `Config.example.h` to `Config.h` and fill in your **2.4 GHz** Wi-Fi name and password, plus the latitude and longitude for the weather. `Config.h` is in `.gitignore`, so it is never committed.
+5. Select **ESP32 Dev Module** and your serial port, then upload. The sketch uses about 93% of the default partition. If you add features, pick Tools → Partition Scheme → Huge APP.
+6. The screen shows SYNCING TIME until Wi-Fi connects and the clock is set, then the overview appears.
 
-上传一直 Connecting 时，按住板上的 BOOT，开始写入后松开。
+If the upload hangs on "Connecting…", hold the BOOT button on the board until writing starts.
 
-## 常见问题 Troubleshooting
+## Troubleshooting
 
-开机时串口（115200）会打印 Wi-Fi 诊断：
+At boot the serial monitor (115200 baud) prints Wi-Fi diagnostics:
 
-- `yours NOT found`：名称不对，或者路由器只开了 5 GHz。
-- `reason 15: 4-way handshake timeout`：通常是密码不对。串口还会打印 `Password fingerprint`（密码 SHA-256 的前 8 位，不泄露密码），可以在电脑上对照：
+- `yours NOT found`: the network name is wrong, or the router only broadcasts on 5 GHz.
+- `reason 15: 4-way handshake timeout`: usually a wrong password. The log also prints a `Password fingerprint` (the first 8 hex digits of the password's SHA-256, which does not reveal it). Compare it on your computer:
   ```bash
-  printf '%s' '你的密码' | shasum -a 256 | cut -c1-8
+  printf '%s' 'your-password' | shasum -a 256 | cut -c1-8
   ```
-- 握手连续失败时程序会自动轮流尝试：锁定最强热点、降低发射功率、关闭 PMF、只用 802.11b/g。
-- 屏幕不亮：把 `DeskPet_ESP32.ino` 里的 `OLED_HW_SPI` 改成 `0`，改用软件 SPI。
-- 太空界面灰度闪得难受：长按切到纯黑白，或把 `OLED_FAST_OSC` 改成 `0`。
+- After repeated handshake failures, the sketch cycles through fallbacks automatically: lock to the strongest access point, lower TX power, disable PMF, 802.11b/g only.
+- Blank screen: set `OLED_HW_SPI` to `0` in `DeskPet_ESP32.ino` to fall back to software SPI.
+- Gray levels flicker too much: long-press for pure black and white, or set `OLED_FAST_OSC` to `0`.
 
-## 实现要点 How it works
+## How It Works
 
-- 海洋：逐列从近到远光线步进的高度场（多组定向尖峰正弦波 + 远处涌浪 + 大浪波前），Lambert 光照 + 月光高光，Bayer 抖动，粒子做浪花和白沫；鲸鱼是平滑多边形扫描线填充并与海面做遮挡。两个 CPU 核心各算半屏。
-- 太空：光线-球求交 + 深度缓冲，土星环和银河盘用光线-平面，黑洞用屏幕空间引力透镜；在第二个核心上渲染，主核心连续推送灰度子帧（硬件 SPI 8 MHz + SH1106 最快内部振荡器）。
-- 只运行当前界面：太空界面的渲染任务和约 48 KB 绘图内存只在进入时创建、离开就释放（开机就占用会让 Wi-Fi 握手失败）。
-- 按钮由独立任务每 5 ms 采样，画面再忙也不会漏按。
+- **Ocean**: a front-to-back column ray march through a heightfield made of several directional, sharpened sine waves, distant swells and big-wave fronts. Lambert lighting plus moon glints, Bayer dithering, and particles for spray and foam. Whales are smoothed polygons, scanline-filled and occluded by the waves. Each CPU core draws half the screen.
+- **Space**: ray-sphere intersection with a depth buffer, ray-plane intersection for Saturn's rings and the galactic disk, and screen-space gravitational lensing for the black hole. Frames render on the second core while the main core streams gray sub-frames (hardware SPI at 8 MHz plus the SH1106's fastest internal oscillator).
+- **Only the current screen runs**: the space renderer's task and its ~48 KB of buffers are created when you enter the screen and freed when you leave. Holding that memory from boot made the Wi-Fi handshake fail.
+- **Button**: sampled every 5 ms by its own task, so presses are never missed, however busy the frame is.
 
-## 致谢与许可 Credits & License
+## Credits and License
 
-- **机器人眼睛 / 表情**：`robot_eye.cpp`、`robot_eye.hpp`、`RobotEye.h` 来自 [fonzu/RobotEye](https://github.com/fonzu/RobotEye)，版权归原作者，按 MIT 许可保留在 [`DeskPet_ESP32/LICENSE-RobotEye-MIT.txt`](DeskPet_ESP32/LICENSE-RobotEye-MIT.txt)。表情不是本项目原创。
-- **农历数据**：`LunarData.h` 由 [python-lunardate](https://github.com/lidaobing/python-lunardate)（GPL v2）的 YEAR_INFOS 数据生成。
-- **天气数据**：[Open-Meteo](https://open-meteo.com/)（CC BY 4.0），个人非商业使用无需 API key。
-- **显示库**：[U8g2](https://github.com/olikraus/u8g2)（BSD 2-clause，需自行安装，未包含在本仓库）。
-- 详细来源见 [`DeskPet_ESP32/SOURCES.txt`](DeskPet_ESP32/SOURCES.txt)。
+- **Robot eyes / expressions**: `robot_eye.cpp`, `robot_eye.hpp` and `RobotEye.h` come from [fonzu/RobotEye](https://github.com/fonzu/RobotEye). Copyright stays with the original author; the files keep their MIT license in [`DeskPet_ESP32/LICENSE-RobotEye-MIT.txt`](DeskPet_ESP32/LICENSE-RobotEye-MIT.txt). The expressions are not original to this project.
+- **Lunar calendar data**: `LunarData.h` is generated from the YEAR_INFOS table of [python-lunardate](https://github.com/lidaobing/python-lunardate) (GPL v2).
+- **Weather data**: [Open-Meteo](https://open-meteo.com/) (CC BY 4.0). No API key is needed for personal, non-commercial use.
+- **Display library**: [U8g2](https://github.com/olikraus/u8g2) (BSD 2-clause). Install it separately; it is not included here.
+- Full source notes: [`DeskPet_ESP32/SOURCES.txt`](DeskPet_ESP32/SOURCES.txt).
 
-本项目其余代码（信息总览、海洋、太空等）为兼容农历数据的 GPL v2，以 **GNU GPL v2** 发布，见 [LICENSE](LICENSE)；RobotEye 文件保留其原始 MIT 许可。
+The rest of the code (overview, ocean, space, …) is released under the **GNU GPL v2** to stay compatible with the lunar data; see [LICENSE](LICENSE). The RobotEye files keep their original MIT license.
