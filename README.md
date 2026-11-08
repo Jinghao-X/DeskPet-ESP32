@@ -15,6 +15,12 @@
 
 > The GIFs are rendered frame by frame on a PC from the same `Ocean.cpp` / `Space.cpp` that run on the board. On the real OLED, the space screen's gray levels come from rapidly alternating sub-frames; in the GIF they are drawn as gray.
 
+**On the real hardware:**
+
+| Night ocean | Black hole | Overview |
+|---|---|---|
+| ![ocean on the OLED](docs/photo-ocean.jpg) | ![black hole on the OLED](docs/photo-blackhole.jpg) | ![overview on the OLED](docs/photo-overview.jpg) |
+
 ## Screens
 
 1. **Overview**: big DIN-style Pacific time clock (PST/PDT switches automatically), Beijing time, weekday and date, live weather from Open-Meteo with locally drawn icons, and the Gregorian plus Chinese lunar date (leap months included, 2000–2099).
@@ -37,16 +43,24 @@
 
 For testing, send `s` / `d` / `l` in the serial monitor (115200 baud) to simulate a tap, double-tap or long press.
 
-## Hardware
+## Bill of Materials
 
-- ESP32 WROOM dev board (ESP32 Dev Module)
-- 1.3" SH1106 128×64 OLED, 7-pin SPI version (GND VCC CLK MOSI RES DC CS)
-- A two-pin push button
-- Breadboard and jumper wires
+| Part | Notes |
+|---|---|
+| ESP32-WROOM-32E dev board | Any "ESP32 Dev Module" board works; the one pictured has USB-C |
+| 1.3" SH1106 128×64 OLED | 7-pin **SPI** version (GND VCC CLK MOSI RES DC CS), not the 4-pin I²C one |
+| Tactile push button | Two-pin (a four-pin one works too, using two diagonal legs) |
+| Half-size breadboard | 400 points, 30 rows |
+| Male-to-male jumper wires | 9 (7 for the display, 2 for the button) |
+| USB-C data cable | For power and uploading |
+
+![parts](docs/parts.jpg)
 
 ## Wiring
 
-![wiring](docs/wiring.png)
+![wiring](docs/wiring.svg)
+
+The ESP32's GPIO pin row sits in column **a** (rows 1–19), with the module's metal shield facing up; its other pin row hangs off the edge of the breadboard. The OLED's pins go into column **j**, rows 22–28.
 
 | OLED | ESP32 |
 |---|---|
@@ -58,7 +72,12 @@ For testing, send `s` / `d` / `l` in the serial monitor (115200 baud) to simulat
 | DC | GPIO27 |
 | CS | GPIO25 |
 
-Button: one leg to **GPIO32**, the other to **GND**. The internal pull-up is enabled, so no resistor is needed.
+| Button | ESP32 | Breadboard |
+|---|---|---|
+| Leg 1 | GPIO32 | leg in h16, jumper f16 → e13 |
+| Leg 2 | GND | leg in h18, jumper f18 → b6 |
+
+The internal pull-up is enabled, so the button needs no resistor.
 
 GPIO numbers are the IO14, IO13, … labels printed on the board, not pin positions. The display is rotated 180° in code. If yours ends up upside down, change `U8G2_R2` to `U8G2_R0`.
 
