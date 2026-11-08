@@ -1,8 +1,15 @@
-# DeskPet ESP32
+# DeskPet ESP32 · 把一片海和整个宇宙装进 1.3 寸屏幕
 
-一个放在桌上的 ESP32 小摆件：1.3 寸 128×64 OLED + 一个按钮，四个界面——信息总览、机器人眼睛、3D 夜海、太空巡游。
+**一块 ESP32、一块 128×64 的小 OLED、一个按钮。** 按一下，海上掀起巨浪，鲸鱼跃出水面；再按两下，镜头掠过月球、地球、土星，一路飞进黑洞。
 
-A tiny ESP32 desk companion with a 1.3" 128×64 OLED and one button: an info dashboard, robot eyes, a 3D night ocean and a space tour.
+- 🌊 **可以造浪的 3D 夜海**：真正的透视海面在翻涌，单击就从随机方向卷起一道大浪，浪尖碎成白沫和浪花。
+- 🐋 **会出现的鲸鱼**：喷水、翘尾，或者整条跃出海面，砸回水里时整块屏幕都在震。
+- 🌕 **跟着现实走的月亮**：月相按真实日期计算，窗外是什么月亮，屏幕里就是什么月亮；月光在海面上碎成一片波光。
+- 🕳️ **一个有黑洞的宇宙**：3D 运镜巡游月球 → 地球 → 火星 → 土星 → 太阳系 → 银河系 → 黑洞。引力透镜扭曲星光，吸积盘向内旋转；偶尔飞过的 UFO，路过黑洞会被吸进去。
+- 🎨 **黑白屏上的灰度**：单色 OLED 靠高速切换子帧做出灰阶，两个 CPU 核心一个渲染、一个推屏。
+- 👀 **还有日常的一面**：会眨眼换表情的机器人眼睛，以及时钟、天气、中文农历的信息总览。
+
+**A pocket ocean and universe on a 1.3" OLED.** Tap to whip up waves and watch whales breach under a moon that follows the real lunar phase, then fly a 3D camera past the Moon, Earth and Saturn into a lensing black hole — all on an ESP32 with one button.
 
 | 3D 夜海 Night ocean | 太空巡游 Space tour |
 |---|---|
